@@ -1,9 +1,0 @@
-#RewriteEngine On
-
-#RewriteRule ^anasayfa?$ index.php [L,NC] 
-#sonda ki [L,NC] kısmı last:bu adımdan sonra başka bir şey yapma demek çalışma zamanı azlığı için
-#RewriteRule ^Hakkimizda?$ Hakkimizda.php [L,NC]
-#RewriteRule ^SamplePost?$ Post.php [L,NC]
-#RewriteRule ^Hizmetlerimiz?$ Hizmetlerimiz.php [L,NC]
-#RewriteRule ^iletisim?$  iletisim.php[L,NC]
-

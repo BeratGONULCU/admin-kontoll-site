@@ -90,6 +90,8 @@ $sonuc = $sorgu->fetch();
                             type="submit">Gönder</button>
                     </form>
 
+                    <script type = "text/javascript" src="../js/sweetalert2.all.min.js" ></script>
+
                     <?php
                     if($_POST)
                     {
@@ -104,9 +106,31 @@ $sonuc = $sorgu->fetch();
                         );
 
                         
-                        if($ekle)
+                        if($ekle == true) // sweetalert sitesiyle başarı ve hata mesajlarını güzelleştirdik..
                         {
-                            echo "<script></script>";
+                            ?> <script type = "text/javascript"> 
+                            swal.fire(
+                                {
+                                title:'çok güzel',
+                                text:'mesajınız iletildi',
+                                icon:'succes',
+                                confirmButtonText:'tamam'
+                                }
+                            )
+                            </script> <?php ;
+                        }
+                        else
+                        {
+                            ?> <script type = "text/javascript"> 
+                            swal.fire(
+                                {
+                                title:'Hata',
+                                text:'tüm alanları doğru doldurun',
+                                icon:'error',
+                                confirmButtonText:'tamam'
+                                }
+                            )
+                            </script> <?php ;
                         }
                     }
                     ?>
