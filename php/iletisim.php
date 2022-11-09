@@ -6,7 +6,7 @@ include("../inc/db.php");
 //header("Refresh: 2;"); --> yazılırsa her 10 saniye içinde sayfayı yeniler.
 
 
-$sorgu = $baglanti->prepare("SELECT * FROM iletisimformu where iletisimID = 1");
+$sorgu = $baglanti->prepare("SELECT * FROM iletisimformu");
 $sorgu->execute();
 $sonuc = $sorgu->fetch();
 ?>
@@ -16,8 +16,8 @@ $sonuc = $sorgu->fetch();
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="page-heading">
-                    <h1> üst başlık buraya </h1>
-                    <span class="subheading"> alt başlık buraya </span>
+                    <h1> İletişim </h1>
+                    <span class="subheading"> bizimle iletişime geçin.. </span>
                 </div>
             </div>
         </div>
@@ -40,9 +40,16 @@ $sonuc = $sorgu->fetch();
                         <div class="form-floating">
                             <input class="form-control" id="name" type="text" name="ad" placeholder="Enter your name..."
                                 data-sb-validations="required" />
-                            <label for="name">isim</label>
+                            <label for="name">ad</label>
                             <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                         </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="name" type="text" name="soyad" placeholder="Soyadınızı giriniz..."
+                                data-sb-validations="required" />
+                            <label for="name">soyad</label>
+                            <div class="invalid-feedback" data-sb-feedback="surname:required">A name is required.</div>
+                        </div>
+
                         <div class="form-floating">
                             <input class="form-control" id="email" type="email" name="email" placeholder="Enter your email..."
                                 data-sb-validations="required,email" />
@@ -95,14 +102,14 @@ $sonuc = $sorgu->fetch();
                     <?php
                     if($_POST)
                     {
-                        $sorgu2 = $baglanti->prepare("INSERT INTO iletisimformu SET ad=:ad,email=:email, telNO=:telNO,mesaj=:mesaj ");
+                        $sorgu2 = $baglanti->prepare("INSERT INTO iletisimformu SET ad=:ad,soyad=:soyad,email=:email, telNO=:telNO,mesaj=:mesaj ");
                         $ekle = $sorgu2->execute(
                             [
                                 'ad' => htmlspecialchars($_POST['ad']),
+                                'soyad'=> htmlspecialchars($_POST['soyad']),
                                 'email' => htmlspecialchars($_POST['email']),
                                 'telNO' => htmlspecialchars($_POST['telNO']),
-                                'mesaj' => htmlspecialchars($_POST['mesaj'])
-                            ]
+                                'mesaj' => htmlspecialchars($_POST['mesaj'])                            ]
                         );
 
                         

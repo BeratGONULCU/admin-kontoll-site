@@ -1,15 +1,10 @@
 <?php
-include("../inc/db.php");
 session_start();
 	if(!(isset($_SESSION["oturum"]) && $_SESSION["oturum"] == "6789"))
         {
             header("location:login.php");
         }
-		
-
-        $sorgu2 = $baglanti->prepare("SELECT * FROM kullanici");
-        $sorgu2 ->execute();
-        $sonuc2 = $sorgu2->fetch();
+		include("../../inc/db.php");
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -42,7 +37,7 @@ session_start();
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="kullaniciParolaDegistir.php?id=<?= $sonuc2["id"] ?>">
+                        <a class="dropdown-item" href="../admin/kullaniciParolaDegistir.php">
                         <?= $_SESSION["kullaniciAdi"]; ?>
                         parolasını değiştir</a>
                         <div class="dropdown-divider"></div>
@@ -90,20 +85,20 @@ session_start();
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="anasayfa.php">Ana Sayfa</a>
-                                    <a class="nav-link" href="referanslar.php">Referanslar</a>
+                                    <a class="nav-link" href="../../admin/anasayfa.php">Ana Sayfa</a>
+                                    <a class="nav-link" href="../referanslar.php">Referanslar</a>
                                 </nav>
                             </div>
 
                                 <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="iletisimFormu.php">İletişim</a>
+                                <a class="nav-link" href="../iletisimFormu.php">İletişim</a>
                                 </nav>
                                 <?php
                                 if($_SESSION['yetki'] == "1")
                                 {
                                 ?>
                                  <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="Kullanici.php">Kullanıcılar</a>
+                                <a class="nav-link" href="../Kullanici.php">Kullanıcılar</a>
                                 </nav>
                                 <?php } ?>
                             

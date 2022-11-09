@@ -13,7 +13,7 @@ $sonuc = $sorgu->fetch();
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="page-heading">
-                    <h2><?php echo $sonuc["anaBaslik"] ?></h2>
+                    <h2><?php echo $sonuc["ustBaslik"] ?></h2>
                     <span class="subheading"> <?php echo $sonuc['altBaslik'] ?></span>
                 </div>
             </div>
@@ -25,7 +25,7 @@ $sonuc = $sorgu->fetch();
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <?php echo $sonuc["paragraf"] ?>
+                <?php echo $sonuc["aciklama"] ?>
             </div>
         </div>
     </div>

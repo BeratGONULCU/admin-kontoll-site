@@ -20,98 +20,156 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Kullanıcı Girişi</h3></div>
                                     <div class="card-body">
-                                        
                                         <?php
-                                        $kullaniciAdi = ""; 
-                                        /*aşağıda (kullanıcı adı) kısmına ekledik çünkü şifre yanlış girilirse adı silinmemesi için 
-                                        ve burada boş tanımlamamın sebebi site ilk yüklediğinde hata vermemesi içindir.*/
+                                        /*
+                                        if(session_start() == true)
+                                        {
+                                            location("");
+                                        }
+                                        */
+                                        session_start();
 
-                                        // echo md5("121234521"); //12 12345 21 sayısının şifreleme yöntemi (önemli)
-
-                                        session_start();    //oturum oluşturalacağı için bu komut yazıldı. baştan yazmak gerekli sonra unutlursa çalışmaz.
                                         include("../inc/db.php");
 
-                                        if(isset($_SESSION["oturum"]) && $_SESSION["oturum"] == "3456")
+                                        if(isset($_SESSION["oturum"]) && $_SESSION["oturum"] == "6789")
                                         {
                                             header("location:index.php");
                                         }
-                                        else
+                                        /*elseif(isset($_COOKIE["çerez"]))
                                         {
-                                            header("location:login.php");
+                                            $sorgu = $baglanti->prepare("SELECT kullaniciAdi,yetki FROM kullanici WHERE aktif = 1");
+                                            $sorgu -> execute();
+                                            while($sonuc = $sorgu->fetch())
+                                            {
+                                                if($_COOKIE["çerez"] == $sonuc[$kullaniciadi])
+                                                {
+                                                    $_SESSION["oturum"] = "6789";
+                                                    $_SESSION["kullaniciAdi"] = $sonuc["kullaniciAdi"];
+                                                    $_SESSION["yetki"] = $sonuc["yetki"];
+                                                    header("location:index.php");
+
+                                                }
+                                            }
                                         }
+                                        */
+                                        
+                                        
 
                                         if($_POST)
                                         {
-                                            $kullaniciAdi = $_POST["txtKullaniciAdi"];
-                                            $parola = $_POST["txtParola"];
-
+                                            $kullaniciadi = $_POST['txtKullaniciAdi'];
+                                            $parola = $_POST['txtParola'];
                                         }
 
                                         ?>
 
-                                        <form method = "post" action = "login.php" >
+                                        <form method="post" action="login.php" >
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputEmailAddress">Kullanıcı Adı</label>
-                                                <input class="form-control py-4" id="inputEmailAddress" name = "txtKullaniciAdi" value="<?php echo @$kullaniciAdi ?>" type="text" placeholder="kullanıcı adı" />
+                                                <input class="form-control py-4" id="inputEmailAddress" name="txtKullaniciAdi" value="<?php echo @$kullaniciadi ?>" type="text" placeholder="Kullanıcı Adı" />
+                                                <?php //value kısmında kullanıcıadı'nı kullanıcı adı girişi yaptıktan sonra yanlış şifre yapıp giriş yapmayı denerse tekrar yenilendiğinde kullanıcı adı tekrar yazmak zorunda kalmaması için 
+                                                //site ilk açıldığında hata vermemesi için başına @ işareti koyduk   ?>
                                             </div>
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputPassword">Parola</label>
-                                                <input class="form-control py-4" id="inputPassword" name = "txtParola" type="password" placeholder="parola" />
+                                                <input class="form-control py-4" id="inputPassword" name="txtParola" type="password" placeholder="Parola" />
+                                            </div>
+											<div class="form-group">
+                                                <img src="../inc/captcha.php" alt="">
+											<input class="form-control py-4" id="inputPassword" name="captcha" type="text" placeholder="güvenlik kodu giriniz.|" />
                                             </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" name = "cbHatirla"/>
-                                                    <label class="custom-control-label" for="rememberPasswordCheck">Beni Hatırla</label>
+                                                    <input class="custom-control-input" id="rememberPasswordCheck" name="cbHatirla" type="checkbox" />
+                                                    <label class="custom-control-label" for="rememberPasswordCheck">Parolamı Hatırla</label>
                                                 </div>
                                             </div>
                                             <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
-                                                <input type="submit" class="btn btn-primary" value="giriş"/>
-                                                <!--<a class="btn btn-primary" href="index.html">Login</a>--> <!-- üstündeki inputu yazdıktan sonra sildik. -->
+                                                <a class="small" href="password.html">Şifremi Unuttum?</a>
+                                                <input type="submit" class="btn btn-primary" value="Giriş Yap"> </input>
                                             </div>
                                         </form>
-
                                         <script type = "text/javascript" src="../js/sweetalert2.all.min.js" ></script>
 
+
                                         <?php
-
-                                        if($_POST)
-                                       {
-                                        $sorgu = $baglanti->prepare("SELECT parola,yetki FROM kullanici WHERE kullaniciAdi=:kullaniciAdi and aktif=1 ");
-                                        $sorgu -> execute(['kullaniciAdi'=>htmlspecialchars($kullaniciAdi)]);
-                                        $sonuc = $sorgu->fetch();
-                                        if(md5("12" . $parola . "21") == $sonuc["parola"])
-                                        {
-                                            $_SESSION["oturum"] = "3456";
-                                            $_SESSION['kullaniciAdi'] = $kullaniciAdi;
-                                            $_SESSION['yetki'] = $sonuc["yetki"];
-
-                                            if(isset($_POST["cbHatirla"]))
-                                            {
-                                                setcookie("cerez" , md5("aa" . $kullaniciAdi . "bb" ) , time() + (60*60*24));
-                                                // giriş yapan kişinin kullanıcı adını başına ve sonuna aa ve bb harflerini koyarak 24 saat şifreleyip saklıyoruz.
-                                                //cerez adında bir cookie oluşturduk , cookie'ler güvenli değildir tarayıcıda saklanır ama session ise server'larda saklanır.
-                                            }
-  
-
-                                            header('location:index.php');
-                                        }
-                                        else
-                                        {
-                                            ?> <script type = "text/javascript"> 
-                                            swal.fire(
-                                                {
-                                                title:'Hata',
-                                                text:'Kullanıcı Adı veya Şifre Yanlış',
-                                                icon:'error',
-                                                confirmButtonText:'tamam'
-                                                }
-                                            )
-                                            </script> <?php ;
-                                        }
-
-                                       } 
                                         
+                                        if($_POST)
+                                        {
+                                            $sorgu = $baglanti->prepare("SELECT parola,yetki FROM kullanici WHERE kullaniciAdi=:kullaniciAdi and aktifMi=1");
+                                            $sorgu->execute(['kullaniciAdi'=> htmlspecialchars($kullaniciadi)]);
+                                            $sonuc = $sorgu->fetch();
+
+                                            if($parola == $sonuc["parola"])
+                                            {
+                                                $_SESSION['oturum'] = "6789";
+                                                $_SESSION['kullaniciAdi'] = $kullaniciadi;
+                                                $_SESSION['yetki'] = $sonuc["yetki"];
+
+                                                if(isset($_POST["cbHatirla"]))
+                                                {
+                                                    setcookie("çerez" , $kullaniciadi , time() + (60*24*24));
+                                                    //eğer beni hatırlaya basarsa çerez adında cookie oluşacak , kullanıcı adını yazıcak ve 24 saat kalınıp silinecek
+                                                }
+
+
+                                                header("location:anasayfa.php"); // login sayfasından giriş yapıldığında anasayfa.php'ye gidicek.
+                                            }
+                                                else
+                                                {
+                                                ?> <script type = "text/javascript"> 
+                                                swal.fire(
+                                                {
+                                                    title:'Hata',
+                                                    text:'Kullanıcı Adı veya Şifre Hatalı',
+                                                    icon:'error',
+                                                    confirmButtonText:'tamam'
+                                                }
+                                                )
+                                                </script> 
+                                                <?php ;
+                                                }
+
+                                            /*
+                                            //yukarıda gösterilen şekilde yapılırsa güvenlik açıkları oluşur daha güvenli olması için md5 şifreleme kullanıcaz.
+                                            
+                                            echo md5(md5("23" . "12345" . "45")); -->2 kere md5 şifreleme karşılığını öğrenmek için yazdırdık.başına sayıları yazmamızın sebebi şifrelemeyi güçlendirip zorlaştırmak.
+                                            şifre : 12345
+
+                                            if($parola = $sonuc["parola"])
+                                            {
+                                                $_SESSION['oturum'] = "6789";
+                                                $_SESSION['kullaniciAdi'] = $kullaniciadi;
+                                                $_SESSION['yetki'] = $sonuc["yetki"];
+
+                                                if(isset($_POST["cbHatirla"]))
+                                                {
+                                                    setcookie("çerez" , $kullaniciadi , time() + (60*24*24));
+                                                    //eğer beni hatırlaya basarsa çerez adında cookie oluşacak , kullanıcı adını yazıcak ve 24 saat kalınıp silinecek
+                                                }
+
+
+                                                header("location:index.php");
+                                            }
+
+                                                     else
+                                                {
+                                                ?> <script type = "text/javascript"> 
+                                                swal.fire(
+                                                {
+                                                    title:'Hata',
+                                                    text:'Kullanıcı Adı veya Şifre Hatalı',
+                                                    icon:'error',
+                                                    confirmButtonText:'tamam'
+                                                }
+                                                )
+                                                </script> <?php ;
+                                                }
+                                            
+                                            */
+
+                                        }
+
                                         ?>
 
                                     </div>

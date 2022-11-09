@@ -3,7 +3,7 @@
 include("../inc/head.php");
 include("../inc/db.php");
 
-$sorgu = $baglanti->prepare("select * from hizmetlerimiz");
+$sorgu = $baglanti->prepare("SELECT * FROM hizmetlerimiz");
 $sorgu->execute();
 $sonuc = $sorgu->fetch();
 

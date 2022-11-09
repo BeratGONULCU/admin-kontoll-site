@@ -49,6 +49,9 @@
                     <li class="nav-item"><a
                             class="nav-link px-lg-3 py-3 py-lg-4 <?php //if($Sayfa == "İletişim") echo "active" ?>"
                             href="iletisim.php">İletişim</a></li>
+					<li class="nav-item"><a
+                            class="nav-link px-lg-3 py-3 py-lg-4 <?php //if($Sayfa == "İletişim") echo "active" ?>"
+                            href="../admin/login.php">üye girişi</a></li>
 
                 </ul>
             </div>
